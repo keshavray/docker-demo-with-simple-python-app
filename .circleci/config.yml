@@ -7,5 +7,5 @@ jobs:
       - image: 'circleci/node:4.8.2'
     steps:
       - checkout
-      - run: npm install -q
+      - run: sudo npm install -q
       - snyk/scan
