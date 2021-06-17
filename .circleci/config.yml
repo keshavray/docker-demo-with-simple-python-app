@@ -7,5 +7,11 @@ jobs:
       - image: 'circleci/node:4.8.2'
     steps:
       - checkout
-      - run: sudo npm install -q
+      - run:
+          name: "Update Node.js and npm"
+          command: |
+            sudo apt-get update
+            sudo apt-get upgrade -y
+            sudo apt install python3-pip
+            pip install -r docker-demo-with-simple-python-app/requirements.txt
       - snyk/scan
