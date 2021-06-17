@@ -12,6 +12,11 @@ jobs:
           command: |
             sudo apt-get update
             sudo apt-get upgrade -y
-            sudo apt install python3-pip
             pip install -r docker-demo-with-simple-python-app/requirements.txt
+      - run:
+          name: "Installing PIP"
+          command: sudo apt install python3-pip
+      - run:
+          name: "Installing Requirements"
+          command: pip install -r docker-demo-with-simple-python-app/requirements.txt
       - snyk/scan
