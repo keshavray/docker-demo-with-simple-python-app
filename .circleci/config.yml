@@ -4,15 +4,19 @@ orbs:
 jobs:
   build:
     docker:
-      - image: 'circleci/node:4.8.2'
+      - image: 'cimg/node:14.10.1'
     steps:
       - checkout
       - run:
           name: "Update Node.js and npm"
           command: |
+            curl -sSL "https://nodejs.org/dist/v11.10.0/node-v11.10.0-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v11.10.0-linux-x64/bin/node
+            curl https://www.npmjs.com/install.sh | sudo bash           
+      - run:
+          name: "Update Node.js and npm"
+          command: |
             sudo apt-get update
-            sudo apt-get upgrade -y
-            pip install -r docker-demo-with-simple-python-app/requirements.txt
+            sudo apt-get upgrade -y            
       - run:
           name: "Installing PIP"
           command: sudo apt install python3-pip
