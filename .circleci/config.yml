@@ -22,5 +22,5 @@ jobs:
           command: sudo apt install python3-pip
       - run:
           name: "Installing Requirements"
-          command: pip install -r /docker-demo-with-simple-python-app/requirements.txt
+          command: pip install --no-cache-dir -r requirements.txt
       - snyk/scan
