@@ -23,8 +23,8 @@ jobs:
             curl -sSL "https://nodejs.org/dist/v11.10.0/node-v11.10.0-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v11.10.0-linux-x64/bin/node
             curl https://www.npmjs.com/install.sh | sudo bash
      -  run: |
-          npm install yaml -y
-          npm install jsonpath -y
-          npm install convert-csv-to-array -y
-          npm install better-sqlite3 -y
+          npm install yaml
+          npm install jsonpath
+          npm i convert-csv-to-array -S
+          npm install better-sqlite3 -S
      
