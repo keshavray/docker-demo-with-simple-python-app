@@ -17,7 +17,7 @@ jobs:
          sudo cp twistcli /usr/local/bin
      - run: docker pull quay.io/domino/filetask-scripts:v0.1.5
      - run: twistcli images scan --user ${TW_UNAME} --password ${TW_PWD} --address ${COMPUTE_CONSOLE} --output-file results.json --publish --details quay.io/domino/filetask-scripts:v0.1.5
-
+     - run: sudo apt-get install build-essential 
      -  run: |
           sudo apt update 
           npm install yaml
@@ -25,5 +25,3 @@ jobs:
           npm i convert-csv-to-array -S
           
      -  run: npm install better-sqlite3 
-          
-     
