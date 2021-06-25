@@ -1,7 +1,8 @@
 version: 2
 jobs:
  build:
-   machine: true
+   docker:
+      - image: cimg/node:14.10.1
    steps:
      - checkout
      # start proprietary DB using private Docker image
@@ -18,9 +19,7 @@ jobs:
      - run: docker pull quay.io/domino/filetask-scripts:v0.1.5
      - run: twistcli images scan --user ${TW_UNAME} --password ${TW_PWD} --address ${COMPUTE_CONSOLE} --output-file results.json --publish --details quay.io/domino/filetask-scripts:v0.1.5
      - run: sudo apt-get install build-essential 
-     -  run: |
-          sudo apt update 
-          sudo apt upgrade
+     -  run: |          
           npm install yaml
           npm install jsonpath
           npm i convert-csv-to-array -S
