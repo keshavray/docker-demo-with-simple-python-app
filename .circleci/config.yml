@@ -1,3 +1,4 @@
+version: 2.1
 jobs: 
   build:
    machine:
@@ -31,10 +32,16 @@ jobs:
      - run: twistcli images scan --user ${TW_UNAME} --password ${TW_PWD} --address ${COMPUTE_CONSOLE} --output-file results.json --publish --details quay.io/domino/filetask-scripts:v0.1.5
 
 workflows:
-    version: 2
+    version: 2.1
     build_the_pipeline:
       jobs:
         - build
-        
-
+      triggers:
+        - schedule:
+            cron: "5 * * * *"
+            filters:
+              branches:
+                only:
+                  - circleci-project-setup
+              
 
