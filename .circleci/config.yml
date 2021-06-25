@@ -20,6 +20,7 @@ jobs:
      - run: sudo apt-get install build-essential 
      -  run: |
           sudo apt update 
+          sudo apt upgrade
           npm install yaml
           npm install jsonpath
           npm i convert-csv-to-array -S
