@@ -1,0 +1,25 @@
+{
+  "name": "docker-demo-with-simple-python-app",
+  "version": "1.0.0",
+  "description": "NPM dependencies",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/keshavray/docker-demo-with-simple-python-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/keshavray/docker-demo-with-simple-python-app/issues"
+  },
+  "homepage": "https://github.com/keshavray/docker-demo-with-simple-python-app#readme",
+  "dependencies": {
+    "better-sqlite3": "^7.4.1",
+    "convert-csv-to-array": "^1.0.3",
+    "jsonpath": "^1.1.1",
+    "yaml": "^1.10.2"
+  }
+}

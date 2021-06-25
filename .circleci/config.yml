@@ -1,41 +1,54 @@
 version: 2.1
-jobs: 
-  build:
-   machine:
-     image: ubuntu-1604:202004-01
-   steps:
-     - checkout
-     # start proprietary DB using private Docker image
-     # with credentials stored in the UI
-     - run:
-         name: Update the OS and Install all the dependencies
-         command: |
-          sudo apt-get update
-          sudo apt-get install build-essential
-          sudo apt-get install jq
-          npm install yaml
-          npm install jsonpath
-          npm i convert-csv-to-array -S   
-          npm install better-sqlite3  
+executors:
+  ubuntu_env:
+    machine:
+      image: ubuntu-1604:202007-01
 
-     - run: |
-         echo "$DOCKER_PASS" | docker login quay.io --username $DOCKER_USER --password-stdin
-         
-     - run: git clone https://github.com/cerebrotech/platform-apps.git
-     - run: pwd
-     - run: ls -l
-     - run: |
-         chmod +x twistcli
-         sudo cp twistcli /usr/local/bin
-         node -v
-     - run: docker pull quay.io/domino/filetask-scripts:v0.1.5
-     - run: twistcli images scan --user ${TW_UNAME} --password ${TW_PWD} --address ${COMPUTE_CONSOLE} --output-file results.json --publish --details quay.io/domino/filetask-scripts:v0.1.5
+commands:
+  install_dependencies:
+    description: Update Ubuntu and install dependencies
+    steps:
+      - run:
+          command: |
+            sudo apt-get update
+            sudo apt-get install build-essential
+            sudo apt-get install jq
+
+  login_to_registry:
+    description: Login to Quay and Docker Hub
+    steps:
+      - run:
+          command: |
+            echo "$DOCKER_PASS" | docker login quay.io -u "$DOCKER_USER" --password-stdin
+            # Login to Docker Hub to prevent getting rate-limited.
+            # https://docs.docker.com/docker-hub/download-rate-limit
+            # echo "$DOCKERHUB_PAT_PASSWORD" | docker login -u "$DOCKERHUB_USER" --password-stdin
+          name: Login to Quay and Docker Hub
+
+  install_scanning_node_packages:
+    description: Installing npm packages for scanning
+    steps:
+      - run:
+          name: Installing npm packages
+          command: |
+            npm i
+jobs: 
+  scan_images:
+    executor: ubuntu_env
+    steps:
+      - checkout
+      - install_dependencies
+      - install_scanning_node_packages
+      - login_to_registry
+      - run: git clone https://github.com/cerebrotech/platform-apps.git
+      - run: |
+          chmod +x twistcli
+          sudo cp twistcli /usr/local/bin
+      - run: docker pull quay.io/domino/filetask-scripts:v0.1.5
+      - run: twistcli images scan --user ${TW_UNAME} --password ${TW_PWD} --address ${COMPUTE_CONSOLE} --output-file results.json --publish --details quay.io/domino/filetask-scripts:v0.1.5
 
 workflows:
     version: 2.1
     build_the_pipeline:
       jobs:
-        - build
-
-              
-
+        - scan_images
