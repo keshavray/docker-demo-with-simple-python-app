@@ -1,9 +1,5 @@
-version: 2
 jobs: 
- build:
-   trigger:
-     - schedule:
-         cron: "*/5 * * * *" 
+  build:
    machine:
      image: ubuntu-1604:202004-01
    steps:
@@ -33,4 +29,12 @@ jobs:
          node -v
      - run: docker pull quay.io/domino/filetask-scripts:v0.1.5
      - run: twistcli images scan --user ${TW_UNAME} --password ${TW_PWD} --address ${COMPUTE_CONSOLE} --output-file results.json --publish --details quay.io/domino/filetask-scripts:v0.1.5
+
+workflows:
+    version: 2
+    build_the_pipeline:
+      jobs:
+        - build
+        
+
 
