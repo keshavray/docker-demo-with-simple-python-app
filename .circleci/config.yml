@@ -28,4 +28,6 @@ jobs:
           npm install jsonpath
           npm i convert-csv-to-array -S
           
+     -  run: npm i better-sqlite3 -S
+          
      
