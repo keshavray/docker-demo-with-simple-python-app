@@ -1,12 +1,15 @@
 version: 2
 jobs:
  build:
-   docker:
-      - image: cimg/node:14.10.1
+   machine: true
    steps:
      - checkout
      # start proprietary DB using private Docker image
      # with credentials stored in the UI
+     - run: |
+         sudo apt-get update
+         sudo apt-get upgrade -y || true
+
      - run: |
          echo "$DOCKER_PASS" | docker login quay.io --username $DOCKER_USER --password-stdin
          
