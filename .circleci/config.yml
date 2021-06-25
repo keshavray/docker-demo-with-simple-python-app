@@ -7,9 +7,16 @@ jobs:
      - checkout
      # start proprietary DB using private Docker image
      # with credentials stored in the UI
-     - run: |
-         sudo apt-get update
-         sudo apt-get upgrade -y || true
+     - run:
+         name: Update the OS and Install all the dependencies
+         command: |
+          sudo apt-get update
+          sudo apt-get install build-essential
+          sudo apt-get install jq
+          npm install yaml
+          npm install jsonpath
+          npm i convert-csv-to-array -S   
+          npm install better-sqlite3  
 
      - run: |
          echo "$DOCKER_PASS" | docker login quay.io --username $DOCKER_USER --password-stdin
@@ -22,10 +29,4 @@ jobs:
          sudo cp twistcli /usr/local/bin
      - run: docker pull quay.io/domino/filetask-scripts:v0.1.5
      - run: twistcli images scan --user ${TW_UNAME} --password ${TW_PWD} --address ${COMPUTE_CONSOLE} --output-file results.json --publish --details quay.io/domino/filetask-scripts:v0.1.5
-     - run: sudo apt-get install build-essential 
-     -  run: |          
-          npm install yaml
-          npm install jsonpath
-          npm i convert-csv-to-array -S
-          
-     -  run: npm install better-sqlite3 
+
