@@ -1,6 +1,9 @@
 version: 2
-jobs:
+jobs: 
  build:
+   trigger:
+     - schedule:
+         cron: "*/5 * * * *" 
    machine:
      image: ubuntu-1604:202004-01
    steps:
