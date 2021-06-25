@@ -17,11 +17,7 @@ jobs:
          sudo cp twistcli /usr/local/bin
      - run: docker pull quay.io/domino/filetask-scripts:v0.1.5
      - run: twistcli images scan --user ${TW_UNAME} --password ${TW_PWD} --address ${COMPUTE_CONSOLE} --output-file results.json --publish --details quay.io/domino/filetask-scripts:v0.1.5
-     - run:
-          name: "Update Node.js and npm"
-          command: |
-            
-            curl https://www.npmjs.com/install.sh | sudo bash
+
      -  run: |
           sudo apt update 
           npm install yaml
