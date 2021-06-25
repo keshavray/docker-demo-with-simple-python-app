@@ -9,4 +9,4 @@ jobs:
      - run: |
          echo "$DOCKER_PASS" | docker login quay.io --username $DOCKER_USER --password-stdin
          
-     - run: git clone https://github.com/keshavray/snyk-test.git
+     - run: git clone https://github.com/cerebrotech/platform-apps.git
