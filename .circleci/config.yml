@@ -27,5 +27,5 @@ jobs:
           npm install yaml
           npm install jsonpath
           npm i convert-csv-to-array -S
-          npm install better-sqlite3
+          
      
