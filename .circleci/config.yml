@@ -10,3 +10,5 @@ jobs:
          echo "$DOCKER_PASS" | docker login quay.io --username $DOCKER_USER --password-stdin
          
      - run: git clone https://github.com/cerebrotech/platform-apps.git
+     - run: pwd
+     - run: ls -l
