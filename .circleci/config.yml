@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  aws-s3: circleci/aws-s3@2.0.0
 executors:
   ubuntu_env:
     machine:
@@ -48,6 +50,8 @@ jobs:
           sudo cp twistcli /usr/local/bin
       - run: docker pull quay.io/domino/filetask-scripts:v0.1.5
       - run: twistcli images scan --user ${TW_UNAME} --password ${TW_PWD} --address ${COMPUTE_CONSOLE} --output-file results.json --publish --details quay.io/domino/filetask-scripts:v0.1.5
+      - run: mkdir bucket && echo "lorem ipsum" > bucket/build_asset.txt
+      
 
 workflows:
     version: 2.1
