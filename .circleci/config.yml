@@ -50,11 +50,24 @@ jobs:
           sudo cp twistcli /usr/local/bin
       - run: docker pull quay.io/domino/filetask-scripts:v0.1.5
       - run: twistcli images scan --user ${TW_UNAME} --password ${TW_PWD} --address ${COMPUTE_CONSOLE} --output-file results.json --publish --details quay.io/domino/filetask-scripts:v0.1.5
-      - run: mkdir bucket && echo "lorem ipsum" > bucket/build_asset.txt
       
+  push_to_s3:
+    executor: ubuntu_env    
+    steps:
+      -  run: mkdir bucket && echo "lorem ipsum" > bucket/build_asset.txt
+      - aws-s3/sync:
+          arguments: |
+            --acl public-read \
+            --cache-control "max-age=86400"
+          aws-access-key-id: AKIAXTWDPQIWBF6PIB4P
+          aws-region: "$REGION"
+          aws-secret-access-key: "$SECRET_KEY"
+          from: bucket
+          to: 's3://data-store-keshav/results/'
 
 workflows:
     version: 2.1
     build_the_pipeline:
       jobs:
         - scan_images
+        - push_to_s3
