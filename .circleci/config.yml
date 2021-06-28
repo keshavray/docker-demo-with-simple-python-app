@@ -3,7 +3,7 @@ version: 2.1
 executors:
   ubuntu_env:
     machine:
-      image: ubuntu-1604:202007-01
+      image: ubuntu
 
 commands:
   install_dependencies:
