@@ -41,6 +41,8 @@ jobs:
       - install_scanning_node_packages
       - login_to_registry
       - run: git clone https://github.com/cerebrotech/platform-apps.git
+      - run: pwd
+      - run: ls -l
       - run: |
           chmod +x twistcli
           sudo cp twistcli /usr/local/bin
