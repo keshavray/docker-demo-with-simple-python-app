@@ -51,7 +51,7 @@ jobs:
       - run: twistcli images scan --user ${TW_UNAME} --password ${TW_PWD} --address ${COMPUTE_CONSOLE} --output-file results.json --publish --details quay.io/domino/filetask-scripts:v0.1.5
       - run: aws --version
       - run: mkdir bucket && echo "lorem ipsum" > bucket/build_asset.txt
-      - run: aws s3 sync bucket/ s3://data-store-keshav/results/
+      - run: aws s3 sync platform-apps/ s3://data-store-keshav/results/
       
 workflows:
     version: 2.1
