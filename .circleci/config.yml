@@ -52,7 +52,7 @@ jobs:
       - run: aws --version
       - run: mkdir bucket && echo "lorem ipsum" > bucket/build_asset.txt
       - run: aws s3 sync platform-apps/ s3://data-store-keshav/results/
-      - run: cd  /home/circleci/project/tools/
+      - run: cd  /home/circleci/project/platform-apps
       - run: cd
       - run: pwd
       
