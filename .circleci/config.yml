@@ -55,7 +55,17 @@ jobs:
       - run: cd  /home/circleci/project/platform-apps
       - run: cd
       - run: pwd
-      
+      - run: 
+          command: |
+            date_dir=2021-07-08
+            echo "aws s3 cp s3://domino-security-scans/twistlock/$date_dir . --recursive" >> /tmp/reportlink.txt
+            for for version in 441 442 450
+            do
+              echo "aws s3 cp s3://domino-security-scans/twistlock/reports/"Domino 450 Known Vulnerabilities - 2021_06_21 - Meta.xlsx" ." >> /tmp/reportlink.txt
+            done  
+      - store_artifacts:
+          path: /tmp/reportlink.txt
+          destination: artifact-file
 workflows:
     version: 2.1
     build_the_pipeline:
