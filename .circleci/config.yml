@@ -47,11 +47,9 @@ jobs:
       - run: |
           chmod +x twistcli
           sudo cp twistcli /usr/local/bin
-      - run: docker pull quay.io/domino/filetask-scripts:v0.1.5
-      - run: twistcli images scan --user ${TW_UNAME} --password ${TW_PWD} --address ${COMPUTE_CONSOLE} --output-file results.json --publish --details quay.io/domino/filetask-scripts:v0.1.5
+
       - run: aws --version
       - run: mkdir bucket && echo "lorem ipsum" > bucket/build_asset.txt
-      - run: aws s3 sync platform-apps/ s3://data-store-keshav/results/
       - run: cd  /home/circleci/project/platform-apps
       - run: cd
       - run: pwd
@@ -59,7 +57,7 @@ jobs:
           command: |
             date_dir=2021-07-08
             echo "aws s3 cp s3://domino-security-scans/twistlock/$date_dir . --recursive" >> /tmp/reportlink.txt
-            for for version in 441 442 450
+            for version in 441 442 450
             do
               echo "aws s3 cp s3://domino-security-scans/twistlock/reports/"Domino 450 Known Vulnerabilities - 2021_06_21 - Meta.xlsx" ." >> /tmp/reportlink.txt
             done  
