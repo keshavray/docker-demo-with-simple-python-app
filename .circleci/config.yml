@@ -49,9 +49,11 @@ jobs:
             - run: git clone --single-branch --branch << parameters.branch >> https://github.com/cerebrotech/platform-apps.git
       - when:
           condition:
-            equal: [ PLAT-865 , << parameters.branch >> ]
+            and:
+              - not:
+                  equal: [ develop, << parameters.branch >> ]     
           steps:
-            - run: echo "Hello World from develop branch"              
+            - run: echo "Hello World from << parameters.branch >> branch"              
       - install_dependencies
       - install_scanning_node_packages
       - login_to_registry       
@@ -81,7 +83,7 @@ workflows:
     build_the_pipeline:
       jobs:
         - scan_images:
-            branch: develop
+            branch: PLAT-865
 
             
             
