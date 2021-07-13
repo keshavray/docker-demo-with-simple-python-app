@@ -80,7 +80,8 @@ workflows:
     version: 2.1
     build_the_pipeline:
       jobs:
-        - scan_images
+        - scan_images:
+            branch: PLAT-865
 
             
             
