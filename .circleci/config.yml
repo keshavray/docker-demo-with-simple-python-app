@@ -33,19 +33,7 @@ commands:
           command: |
             npm i
 jobs:
-  job1:
-    executor: ubuntu_env
-    parameters:
-      branch:
-        type: string
-        default: develop
-    steps:
-      - when:
-          condition: <<parameters.branch>>
-          steps:
-            - run: echo "my custom checkout"      
-
-  scan_images:
+   scan_images:
     executor: ubuntu_env
     parameters:
       branch:
@@ -59,6 +47,11 @@ jobs:
           steps:
             - run: echo "Cloning a feature branch"
             - run: git clone --single-branch --branch << parameters.branch >> https://github.com/cerebrotech/platform-apps.git
+      - when:
+          condition:
+            equal: [ develop, << parameters.branch >> ]
+          steps:
+            - run: echo "Hello World from develop branch"              
       - install_dependencies
       - install_scanning_node_packages
       - login_to_registry       
@@ -88,6 +81,6 @@ workflows:
     build_the_pipeline:
       jobs:
         - scan_images
-        - job1
+
             
             
