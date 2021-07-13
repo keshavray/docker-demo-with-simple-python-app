@@ -43,13 +43,13 @@ jobs:
       - checkout
       - when:
           condition:
-            equal: [ PLAT-865, << parameters.branch >> ]
+            equal: [ develop, << parameters.branch >> ]
           steps:
             - run: echo "Cloning a feature branch"
             - run: git clone --single-branch --branch << parameters.branch >> https://github.com/cerebrotech/platform-apps.git
       - when:
           condition:
-            equal: [ develop, << parameters.branch >> ]
+            equal: [ PLAT-865 , << parameters.branch >> ]
           steps:
             - run: echo "Hello World from develop branch"              
       - install_dependencies
