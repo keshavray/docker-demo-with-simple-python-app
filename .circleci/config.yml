@@ -1,5 +1,4 @@
 version: 2.1
-
 executors:
   ubuntu_env:
     machine:
@@ -33,22 +32,42 @@ commands:
           name: Installing npm packages
           command: |
             npm i
-jobs: 
+jobs:
+  job1:
+    executor: ubuntu_env
+    parameters:
+      branch:
+        type: string
+        default: develop
+    steps:
+      - when:
+          condition: <<parameters.branch>>
+          steps:
+            - run: echo "my custom checkout"      
+
   scan_images:
     executor: ubuntu_env
+    parameters:
+      branch:
+        type: string
+        default: PLAT-865
     steps:
       - checkout
+      - when:
+          condition:
+            equal: [ PLAT-865, << parameters.branch >> ]
+          steps:
+            - run: echo "Cloning a feature branch"
+            - run: git clone --single-branch --branch << parameters.branch >> https://github.com/cerebrotech/platform-apps.git
       - install_dependencies
       - install_scanning_node_packages
-      - login_to_registry
-      - run: git clone https://github.com/cerebrotech/platform-apps.git
+      - login_to_registry       
       - run: pwd
       - run: ls -l
       - run: |
           chmod +x twistcli
           sudo cp twistcli /usr/local/bin
 
-      - run: aws --version
       - run: mkdir bucket && echo "lorem ipsum" > bucket/build_asset.txt
       - run: cd  /home/circleci/project/platform-apps
       - run: cd
@@ -69,3 +88,6 @@ workflows:
     build_the_pipeline:
       jobs:
         - scan_images
+        - job1
+            
+            
