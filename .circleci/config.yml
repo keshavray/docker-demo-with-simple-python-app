@@ -38,6 +38,7 @@ jobs:
     parameters:
       branch:
         type: string
+        default: develop
         
     steps:
       - checkout
@@ -83,7 +84,7 @@ workflows:
     build_the_pipeline:
       jobs:
         - scan_images:
-            branch: PLAT-865
+            branch: anything_branch
 
             
             
