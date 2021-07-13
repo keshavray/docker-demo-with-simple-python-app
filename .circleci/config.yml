@@ -81,7 +81,7 @@ workflows:
     build_the_pipeline:
       jobs:
         - scan_images:
-            branch: PLAT-865
+            branch: develop
 
             
             
