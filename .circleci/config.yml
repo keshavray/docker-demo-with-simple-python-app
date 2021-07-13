@@ -84,7 +84,7 @@ workflows:
     build_the_pipeline:
       jobs:
         - scan_images:
-            branch: anything_branch
+            branch:
 
             
             
