@@ -38,7 +38,7 @@ jobs:
     parameters:
       branch:
         type: string
-        default: PLAT-865
+        
     steps:
       - checkout
       - when:
