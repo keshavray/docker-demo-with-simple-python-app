@@ -46,7 +46,7 @@ jobs:
           condition:
             equal: [ develop, << parameters.branch >> ]
           steps:
-            - run: echo "Cloning a feature branch"
+            - run: echo "Cloning develop branch"
             - run: git clone --single-branch --branch << parameters.branch >> https://github.com/cerebrotech/platform-apps.git
       - when:
           condition:
@@ -60,6 +60,8 @@ jobs:
       - login_to_registry       
       - run: pwd
       - run: ls -l
+      - run: zip -r temp.zip platform-apps
+      - run: cp temp.zip /tmp/
       - run: |
           chmod +x twistcli
           sudo cp twistcli /usr/local/bin
@@ -77,8 +79,8 @@ jobs:
               echo "aws s3 cp s3://domino-security-scans/twistlock/reports/"Domino 450 Known Vulnerabilities - 2021_06_21 - Meta.xlsx" ." >> /tmp/reportlink.txt
             done  
       - store_artifacts:
-          path: /tmp/reportlink.txt
-          destination: artifact-file
+          path: /tmp/temp.zip 
+  
 workflows:
     version: 2.1
     build_the_pipeline:
