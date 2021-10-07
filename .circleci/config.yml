@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  path-filtering: circleci/path-filtering@0.0.3
 executors:
   ubuntu_env:
     machine:
