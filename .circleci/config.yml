@@ -1,94 +1,37 @@
 version: 2.1
 orbs:
   path-filtering: circleci/path-filtering@0.0.3
-executors:
-  ubuntu_env:
-    machine:
-      image: ubuntu-2004:202101-01 
-
-commands:
-  install_dependencies:
-    description: Update Ubuntu and install dependencies
-    steps:
-      - run:
-          command: |
-            sudo apt-get update
-            sudo apt-get install build-essential
-            sudo apt-get install jq
-
-  login_to_registry:
-    description: Login to Quay and Docker Hub
-    steps:
-      - run:
-          command: |
-            echo "$DOCKER_PASS" | docker login quay.io -u "$DOCKER_USER" --password-stdin
-            # Login to Docker Hub to prevent getting rate-limited.
-            # https://docs.docker.com/docker-hub/download-rate-limit
-            # echo "$DOCKERHUB_PAT_PASSWORD" | docker login -u "$DOCKERHUB_USER" --password-stdin
-          name: Login to Quay and Docker Hub
-
-  install_scanning_node_packages:
-    description: Installing npm packages for scanning
-    steps:
-      - run:
-          name: Installing npm packages
-          command: |
-            npm i
 jobs:
-   scan_images:
-    executor: ubuntu_env
-    parameters:
-      branch:
-        type: string
-        default: develop
+  build:
+    docker:
+      - image: cimg/node:14.10.1 # the primary container, where your job's commands are run
         
     steps:
-      - checkout
-      - when:
-          condition:
-            equal: [ develop, << parameters.branch >> ]
-          steps:
-            - run: echo "Cloning develop branch"
-            - run: git clone --single-branch --branch << parameters.branch >> https://github.com/cerebrotech/platform-apps.git
-      - when:
-          condition:
-            and:
-              - not:
-                  equal: [ develop, << parameters.branch >> ]     
-          steps:
-            - run: echo "Hello World from << parameters.branch >> branch"              
-      - install_dependencies
-      - install_scanning_node_packages
-      - login_to_registry       
-      - run: pwd
-      - run: ls -l
-      - run: zip -r temp.zip platform-apps
-      - run: cp temp.zip /tmp/
-      - run: |
-          chmod +x twistcli
-          sudo cp twistcli /usr/local/bin
-
-      - run: mkdir bucket && echo "lorem ipsum" > bucket/build_asset.txt
-      - run: cd  /home/circleci/project/platform-apps
-      - run: cd
-      - run: pwd
-      - run: 
+      - checkout 
+      - run: echo "hello world" # run the `echo` 
+      - run:
+          name: "Update Node.js and npm"
           command: |
-            date_dir=2021-07-08
-            echo "aws s3 cp s3://domino-security-scans/twistlock/$date_dir . --recursive" >> /tmp/reportlink.txt
-            for version in 441 442 450
-            do
-              echo "aws s3 cp s3://domino-security-scans/twistlock/reports/"Domino 450 Known Vulnerabilities - 2021_06_21 - Meta.xlsx" ." >> /tmp/reportlink.txt
-            done  
-      - store_artifacts:
-          path: /tmp/temp.zip 
-  
-workflows:
-    version: 2.1
-    build_the_pipeline:
-      jobs:
-        - scan_images:
-            branch:
+            curl -sSL "https://nodejs.org/dist/v11.10.0/node-v11.10.0-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v11.10.0-linux-x64/bin/node
+            curl https://www.npmjs.com/install.sh | sudo bash
+      
+      - run: sudo apt-get update
+           
+      - run:
+           name: Installing Python PIP
+           command: sudo apt install python3-pip
+      
+      - run:
+           name: Install Snyk CLI
+           command: sudo npm install -g snyk
+      - run:
+           name: Authorizing with Snyk Server
+           command: snyk config set api=8e5c3f81-e599-4caa-8fab-085a90fdf5dd
 
-            
-            
+      - run:
+           name: Installing Requirements 
+           command: pip install -r requirements.txt 
+      - run:
+           name: test with Snyk
+           command: snyk test --file=requirements.txt --command=python3 || true
+           
