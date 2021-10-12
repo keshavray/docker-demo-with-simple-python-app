@@ -15,7 +15,8 @@ commands:
                echo "Hello World"
                echo "<< parameters.pattern >>"
                snyk test --file="<< parameters.pattern >>" --command=python3 || true
-               fi                   
+               fi  
+          name: Run Snyk                              
 jobs:
   build:
     docker:
