@@ -11,7 +11,7 @@ commands:
     steps:
       - run:
           command: |
-               if [[ "$CIRCLE_BRANCH" = "develop" ]] && (git diff --name-only --diff-filter=ADMR @~..@ | grep -Eq "<< parameters.pattern >>"); then
+               if [[ "$CIRCLE_BRANCH" = "circleci-project-setup" ]] && (git diff --name-only --diff-filter=ADMR @~..@ | grep -Eq "<< parameters.pattern >>"); then
                echo "<< parameters.pattern >>"
                snyk test --file="<< parameters.pattern >>" --command=python3 || true
                fi  
