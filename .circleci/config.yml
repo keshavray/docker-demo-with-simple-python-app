@@ -12,7 +12,6 @@ commands:
       - run:
           command: |
                if git diff --name-only --diff-filter=ADMR @~..@ | grep -Eq "<< parameters.pattern >>" ; then
-               echo "Hello World"
                echo "<< parameters.pattern >>"
                snyk test --file="<< parameters.pattern >>" --command=python3 || true
                fi  
