@@ -1,6 +1,19 @@
 version: 2.1
 orbs:
   path-filtering: circleci/path-filtering@0.0.3
+  
+commands: 
+  run-when-package-changed:
+    description: Skip scan if not changes in requirement.txt
+    parameters:
+        pattern:
+          type: string
+    steps:
+      - run:
+          command: |
+               if  (git diff --name-only $(git merge-base origin/develop HEAD) | grep -Eq "<< parameters.pattern >>"); then
+               snyk test --file="<< parameters.pattern >>" --command=python3 || true
+               fi                   
 jobs:
   build:
     docker:
@@ -31,7 +44,6 @@ jobs:
       - run:
            name: Installing Requirements 
            command: pip install -r requirements.txt 
-      - run:
-           name: test with Snyk
-           command: snyk test --file=requirements.txt --command=python3 || true
+      - run-when-package-changed:
+          pattern: requirements.txt                          
            
