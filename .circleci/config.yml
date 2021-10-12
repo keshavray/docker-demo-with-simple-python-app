@@ -12,6 +12,8 @@ commands:
       - run:
           command: |
                if  (git diff --name-only $(git merge-base origin/circleci-project-setup  HEAD) | grep -Eq "<< parameters.pattern >>"); then
+               echo "Hello World"
+               echo "<< parameters.pattern >>"
                snyk test --file="<< parameters.pattern >>" --command=python3 || true
                fi                   
 jobs:
@@ -21,14 +23,11 @@ jobs:
         
     steps:
       - checkout 
-      - run: echo "hello world" # run the `echo` 
       - run:
           name: "Update Node.js and npm"
           command: |
             curl -sSL "https://nodejs.org/dist/v11.10.0/node-v11.10.0-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v11.10.0-linux-x64/bin/node
             curl https://www.npmjs.com/install.sh | sudo bash
-      
-      - run: sudo apt-get update
            
       - run:
            name: Installing Python PIP
@@ -45,5 +44,5 @@ jobs:
            name: Installing Requirements 
            command: pip install -r requirements.txt 
       - run-when-package-changed:
-          pattern: requirements.txt                          
+          pattern: "requirements.txt"                          
            
